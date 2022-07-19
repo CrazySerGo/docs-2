@@ -1,0 +1,477 @@
+---
+swagger: "2.0"
+info:
+  description: Indexer for multiple Cosmos Network
+  version: 1.0.0
+  title: Horoscope API Documentation
+host: localhost:3000
+basePath: /api
+tags: []
+paths:
+  /v1/account-info:
+    get:
+      tags:
+      - Account Info
+      summary: Get information of an address
+      description: Get information of an address
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: address
+        in: query
+        description: Address of account
+        required: true
+        type: string
+      - name: chainId
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/account-info/delegations:
+    get:
+      tags:
+      - Account Info
+      summary: Get delegation information of an address
+      description: Get delegation information of an address
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: address
+        in: query
+        description: Address of account
+        required: true
+        type: string
+      - name: chainId
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/asset/index:
+    post:
+      tags:
+      - Asset
+      summary: Register asset with the code id
+      description: Register asset with the code id
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: params
+        required: false
+        schema:
+          type: object
+          properties:
+            codeId:
+              type: number
+              description: Code id of stored contract
+            contractType:
+              type: string
+              description: Type of contract want to register
+              enum:
+              - CW721
+            chainId:
+              type: string
+              example: aura-devnet
+              description: Chain Id of network
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/asset/getByOwner:
+    get:
+      tags:
+      - Asset
+      summary: Get asset by owner
+      description: Get asset by owner
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: owner
+        in: query
+        description: Owner address need to query
+        required: true
+        type: string
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query(if null it will return asset on all chainid)
+        required: false
+        type: string
+      - name: countTotal
+        in: query
+        description: count total record
+        required: false
+        type: boolean
+        default: false
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/asset/getByContractType:
+    get:
+      tags:
+      - Asset
+      summary: Get asset by contract type
+      description: Get asset by contract type
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: contractType
+        in: query
+        description: Contract type need to query
+        required: true
+        type: string
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query
+        required: false
+        type: string
+      - name: pageLimit
+        in: query
+        description: number record return in a page
+        required: false
+        type: number
+        default: 10.0
+      - name: pageOffset
+        in: query
+        description: "Page number, start at 0"
+        required: false
+        type: number
+        default: 0.0
+      - name: countTotal
+        in: query
+        description: count total record
+        required: false
+        type: boolean
+        default: false
+      - name: nextKey
+        in: query
+        description: key for next page
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/block:
+    get:
+      tags:
+      - Block
+      summary: Get latest block
+      description: Get latest block
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+        enum:
+        - aura-testnet
+        - serenity-testnet-001
+        - halo-testnet-001
+        - theta-testnet-001
+        - osmo-test-4
+        - evmos_9000-4
+        - euphoria-1
+      - name: blockHeight
+        in: query
+        description: Block height of transaction
+        required: false
+        type: string
+      - name: blockHash
+        in: query
+        description: Block hash
+        required: false
+        type: string
+      - name: operatorAddress
+        in: query
+        description: operator address who proposed this block
+        required: false
+        type: string
+      - name: pageLimit
+        in: query
+        description: number record return in a page
+        required: false
+        type: number
+        default: 10.0
+      - name: pageOffset
+        in: query
+        description: "Page number, start at 0"
+        required: false
+        type: number
+        default: 0.0
+      - name: countTotal
+        in: query
+        description: count total record
+        required: false
+        type: boolean
+        default: false
+      - name: nextKey
+        in: query
+        description: key for next page
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/codeid/{chainId}/{codeId}/checkStatus:
+    get:
+      tags:
+      - CodeId
+      summary: Check status of code_id
+      description: Check status of code_id
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: chainId
+        in: path
+        description: Chain Id of network
+        required: true
+        type: string
+      - name: codeId
+        in: path
+        description: Code Id of stored contract need to query
+        required: true
+        type: number
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/network/status:
+    get:
+      tags:
+      - Network
+      summary: Get status network
+      description: Get status network
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+        enum:
+        - aura-testnet
+        - serenity-testnet-001
+        - halo-testnet-001
+        - theta-testnet-001
+        - osmo-test-4
+        - evmos_9000-4
+        - euphoria-1
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/proposal:
+    get:
+      tags:
+      - Proposal
+      summary: Get latest proposal
+      description: Get latest proposal
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+        enum:
+        - aura-testnet
+        - serenity-testnet-001
+        - halo-testnet-001
+        - theta-testnet-001
+        - osmo-test-4
+        - evmos_9000-4
+        - euphoria-1
+      - name: proposalId
+        in: query
+        description: proposal Id
+        required: false
+        type: string
+      - name: pageLimit
+        in: query
+        description: number record return in a page
+        required: false
+        type: number
+        default: 10.0
+      - name: pageOffset
+        in: query
+        description: "Page number, start at 0"
+        required: false
+        type: number
+        default: 0.0
+      - name: nextKey
+        in: query
+        description: key for next page
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/transaction:
+    get:
+      tags:
+      - Transaction
+      summary: Get latest transaction
+      description: Get latest transaction
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+        enum:
+        - aura-testnet
+        - serenity-testnet-001
+        - halo-testnet-001
+        - theta-testnet-001
+        - osmo-test-4
+        - evmos_9000-4
+        - euphoria-1
+      - name: blockHeight
+        in: query
+        description: Block height of transaction
+        required: false
+        type: string
+      - name: txHash
+        in: query
+        description: Transaction hash
+        required: false
+        type: string
+      - name: pageOffset
+        in: query
+        description: "Page number, start at 0"
+        required: false
+        type: number
+        default: 0.0
+      - name: pageLimit
+        in: query
+        description: number record return in a page
+        required: false
+        type: number
+        default: 10.0
+      - name: countTotal
+        in: query
+        description: count total record
+        required: false
+        type: boolean
+        default: false
+      - name: nextKey
+        in: query
+        description: key for next page
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+  /v1/validator:
+    get:
+      tags:
+      - Validator
+      summary: Get validator
+      description: Get validator
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: chainid
+        in: query
+        description: Chain Id of network need to query
+        required: true
+        type: string
+        enum:
+        - aura-testnet
+        - serenity-testnet-001
+        - halo-testnet-001
+        - theta-testnet-001
+        - osmo-test-4
+        - evmos_9000-4
+        - euphoria-1
+      - name: operatorAddress
+        in: query
+        description: operator address
+        required: false
+        type: string
+      - name: status
+        in: query
+        description: status
+        required: false
+        type: string
+        enum:
+        - BOND_STATUS_UNSPECIFIED
+        - BOND_STATUS_UNBONDED
+        - BOND_STATUS_UNBONDING
+        - BOND_STATUS_BONDED
+      - name: pageLimit
+        in: query
+        description: number record return in a page
+        required: false
+        type: number
+        default: 10.0
+      - name: pageOffset
+        in: query
+        description: "Page number, start at 0"
+        required: false
+        type: number
+        default: 0.0
+      - name: nextKey
+        in: query
+        description: key for next page
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Register result
+        "422":
+          description: Missing parameters
+securityDefinitions: {}
+definitions: {}
+parameters: {}
+responses: {}

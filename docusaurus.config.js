@@ -47,18 +47,15 @@ const config = {
                 docsPluginId: "classic",
                 config: {
                     petstore: { // Note: petstore key is treated as the <id> and can be used to specify an API doc instance when using CLI commands
-                        specPath: "swagger.json", // Path to designated spec file
+                        specPath: "petstore.yaml", // Path to designated spec file
                         outputDir: "api/petstore", // Output directory for generated .mdx docs
                         sidebarOptions: {
                             groupPathsBy: "tag",
-                        },
-                    },
-                    burgers: {
-                    specPath: "swagger.json",
-                    outputDir: "api/food/burgers",
+                            categoryLinkSource: "tag"
+                        }
                     }
                 }
-            },
+            }
         ]
     ],
     themeConfig:
